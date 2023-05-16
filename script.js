@@ -20,7 +20,6 @@ function generatePassword() {
     temp = Math.floor(Math.random() * passwordCharacters.length);
     password = password.concat(passwordCharacters.substr(temp,1));
   }
-  console.log(password);
 };
 
 function createPasswordOptions () {
@@ -56,11 +55,9 @@ function createPasswordOptions () {
   if (containsLowers) {
       passwordCharacters = passwordCharacters.concat(lowers);
   }
-  console.log(passwordCharacters);
 };
 
 // Add event listener to generate button
-
 generateBtn.addEventListener("click", writePassword);
 
 
