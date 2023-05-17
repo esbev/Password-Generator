@@ -1,59 +1,89 @@
 // Assignment Code
 var generateBtn = document.querySelector("#generate");
-var passwordCharacters = "0123456789";
+let passwordCharacters = "";
+var numbers = "0123456789";
 var specials = "\!\"\#\$\%\&\'\(\)\*\+\,\-\.\/\:\;\<\=\>\?\@\[\\\]\^\_\`\{\|\}\~";
 var uppers = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 var lowers = "abcdefghijklmnopqrstuvwxyz";
 var passwordLength;
-var password = "";
+let password = "";
 
 function writePassword() {
-  generatePassword();
-  var passwordText = document.querySelector("#password");
-  passwordText.value = password;
+  //clears the password and passwordCharacters so the function can run again without combining previous password and password options
+  password = "";
+  passwordCharacters = "";
+  //checks to make sure passwordCharacters is empty before generating a new password
+  if (passwordCharacters == "") {
+    let password = generatePassword();
+    var passwordText = document.querySelector("#password");
+    passwordText.value = password;
+  }
 };
 
+//creates a random password
 function generatePassword() {
   createPasswordOptions();
   var temp;
   for (i = 0; i < passwordLength; i++) {
     temp = Math.floor(Math.random() * passwordCharacters.length);
-    password = password.concat(passwordCharacters.substr(temp,1));
+    password = password + (passwordCharacters.substr(temp,1));
   }
+  return password;
 };
 
+//accepts user input to create custom options for a password
 function createPasswordOptions () {
   passwordLength = prompt("How long would you like the length of your password to be? \n(Must be 8 - 128 characters in length)");
+  //validates user input
+  if (!passwordLength) {
+    return;
+  }
   if (passwordLength < 8) {
     alert("Not Enough, password length must be 8-128 characters in length");
     writePassword();
     return;
-  } else if (passwordLength > 128) {
+  } 
+  if (passwordLength > 128) {
     alert("Too many, password length must be 8-128 characters in length");
     writePassword();
     return;
-  } else if (isNaN(passwordLength)) {
+  }
+  if (isNaN(passwordLength)) {
     alert("Please enter a number from 8-128.")
     writePassword();
     return;
   }
 
-  //concat special characters to password choices
-  var containsSpecialCharacters = confirm("Click OK to include special characters.");
-  if (containsSpecialCharacters) {
-      passwordCharacters = passwordCharacters.concat(specials);
-  }
-  
-  //concat uppercase alphabet to password choices
-  var containsUppers = confirm("Click OK to include uppercase characters. ");
-  if (containsUppers) {
-      passwordCharacters = passwordCharacters.concat(uppers);
+  //add special characters for password choices
+  var isNumbers = confirm("Click OK to include numbers.");
+  if (isNumbers) {
+      passwordCharacters = passwordCharacters + numbers;
   }
 
-  //concat lowercase alphabet to password choices
-  var containsLowers = confirm("Click OK to include lowercase characters. ");
-  if (containsLowers) {
-      passwordCharacters = passwordCharacters.concat(lowers);
+  //add special characters for password choices
+  var isSpecial = confirm("Click OK to include special characters.");
+  if (isSpecial) {
+      passwordCharacters = passwordCharacters + specials;
+  }
+  
+  //add uppercase alphabet for password choices
+  var isUpper = confirm("Click OK to include uppercase characters. ");
+  if (isUpper) {
+      passwordCharacters = passwordCharacters + uppers;
+  }
+
+  //add lowercase alphabet for password choices
+  var isLower = confirm("Click OK to include lowercase characters. ");
+  if (isLower) {
+      passwordCharacters = passwordCharacters + lowers;
+  }
+  //if no options are chosen then all options are chosen by default
+  if (!isNumbers && !isSpecial && !isUpper && !isLower) {
+    alert("You chose no criteria. \nBy default all characters are available for your password.")
+    passwordCharacters = passwordCharacters + numbers;
+    passwordCharacters = passwordCharacters + specials;
+    passwordCharacters = passwordCharacters + uppers;
+    passwordCharacters = passwordCharacters + lowers;
   }
 };
 
